@@ -30,6 +30,12 @@ class NeoPixelRing
                     uint32_t color = 0,
                     uint16_t period = 2000, // 0.5 Hz
                     uint8_t param = 0);
+    void setColor(uint8_t ringNum,
+                  uint32_t color);
+    void setPeriod(uint8_t ringNum,
+                   uint16_t period);
+    void setParam(uint8_t ringNum,
+                  uint8_t param);
 
   private:
     void SetSolid(uint8_t startPixel, uint8_t endPixel,
@@ -56,7 +62,6 @@ class NeoPixelRing
     uint32_t* ringColors;
     uint16_t* ringPeriods;
     uint8_t* ringParams;
-    uint8_t brightness;
 
     const uint16_t FLASH_PERIOD = 4000;
     const uint32_t FLASH_COLOR = 0xFFFF00;

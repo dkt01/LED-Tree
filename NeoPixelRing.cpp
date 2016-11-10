@@ -5,7 +5,6 @@ NeoPixelRing::NeoPixelRing(uint8_t pinNum,
                            uint8_t nRings,
                            const uint8_t* rings)
 {
-  brightness = 255;
   numRings = nRings;
   ringSizes = new uint8_t [numRings];
   for(uint8_t i = 0; i < numRings; i++)
@@ -105,7 +104,7 @@ void NeoPixelRing::update()
 
 void NeoPixelRing::setBrightness(uint8_t b)
 {
-  brightness = b;
+  strip.setBrightness(b);
 }
 
 void NeoPixelRing::setPattern(uint8_t ringNum,
@@ -119,6 +118,30 @@ void NeoPixelRing::setPattern(uint8_t ringNum,
     ringPatterns[ringNum] = p;
     ringColors[ringNum] = color;
     ringPeriods[ringNum] = period;
+    ringParams[ringNum] = param;
+  }
+}
+
+void NeoPixelRing::setColor(uint8_t ringNum, uint32_t color)
+{
+  if(ringNum < numRings)
+  {
+    ringColors[ringNum] = color;
+  }
+}
+
+void NeoPixelRing::setPeriod(uint8_t ringNum, uint16_t period)
+{
+  if(ringNum < numRings)
+  {
+    ringPeriods[ringNum] = period;
+  }
+}
+
+void NeoPixelRing::setParam(uint8_t ringNum, uint8_t param)
+{
+  if(ringNum < numRings)
+  {
     ringParams[ringNum] = param;
   }
 }
@@ -339,12 +362,6 @@ uint32_t NeoPixelRing::GammaColor(uint32_t color)
   green = GAMMA[green];
   uint8_t blue = color & 0xFF;
   blue = GAMMA[blue];
-  if(brightness)
-  {
-    red = (red * brightness) >> 8;
-    green = (green * brightness) >> 8;
-    blue = (blue * brightness) >> 8;
-  }
   uint32_t outColor = ((uint32_t)red   << 16) |
                       ((uint32_t)green << 8)  |
                       ((uint32_t)blue);
