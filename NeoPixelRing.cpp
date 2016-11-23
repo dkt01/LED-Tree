@@ -246,13 +246,13 @@ void NeoPixelRing::SetFlash()
       lastUpdate = i;
     }
 
-    uint32_t flashColor = CalcPulseColor(FLASH_COLOR,
+    uint32_t flashColor = CalcPulseColor(GammaColor(FLASH_COLOR),
                                          FLASH_PERIOD/2,
                                          true,
                                          strip.getPixelColor(flashPixels[i]),
                                          curOffset);
 
-    strip.setPixelColor(flashPixels[i], GammaColor(flashColor));
+    strip.setPixelColor(flashPixels[i], flashColor);
   }
 }
 

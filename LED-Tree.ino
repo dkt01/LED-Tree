@@ -10,8 +10,8 @@
 #define PIN 9
 
 // IP Address configuration
-static byte myIP[] = {165,26,78,253};
-static byte gwIP[] = {165,26,78,254}; // Not used
+static byte myIP[] = {192,168,1,253};
+static byte gwIP[] = {192,168,1,254}; // Not used
 
 // MAC Address
 static byte myMAC[] = {0x6,0x5,0x4,0x3,0x2,0x1};
