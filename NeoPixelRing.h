@@ -70,5 +70,7 @@ class NeoPixelRing
     unsigned long flashStart;
     unsigned long now;
 
-    uint8_t GAMMA[256];
+    uint8_t GAMMA[256];     ///< This is used to transform raw colors to gamma-corrected colors
+                            ///  to compensate for brightness perception
+    uint8_t GAMMA_INV[256]; ///< This is used to transform gamma-corrected colors to raw colors
 };

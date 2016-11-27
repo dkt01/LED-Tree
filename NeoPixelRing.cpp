@@ -35,6 +35,9 @@ NeoPixelRing::NeoPixelRing(uint8_t pinNum,
 
   // Gamma correction for x is:
   // ( x / MAXVAL )^2.5 * MAXVAL
+  //
+  // Inverse gamma correction for x is:
+  // ( x / MAXVAL )^0.4 * MAXVAL
   for(int i = 0; i < 256; i++)
   {
     float x = i;
@@ -43,6 +46,13 @@ NeoPixelRing::NeoPixelRing(uint8_t pinNum,
     x *= 255;
 
     GAMMA[i] = x;
+
+    x = i;
+    x /= 255;
+    x = pow(x, 0.4);
+    x *= 255;
+
+    GAMMA_INV[i] = round(x); // Round is more accurate than floor here
   }
 }
 
@@ -246,13 +256,13 @@ void NeoPixelRing::SetFlash()
       lastUpdate = i;
     }
 
-    uint32_t flashColor = CalcPulseColor(GammaColor(FLASH_COLOR),
+    uint32_t flashColor = CalcPulseColor(FLASH_COLOR,
                                          FLASH_PERIOD/2,
                                          true,
-                                         strip.getPixelColor(flashPixels[i]),
+                                         GammaInvColor(strip.getPixelColor(flashPixels[i])),
                                          curOffset);
 
-    strip.setPixelColor(flashPixels[i], flashColor);
+    strip.setPixelColor(flashPixels[i], GammaColor(flashColor));
   }
 }
 
@@ -362,6 +372,20 @@ uint32_t NeoPixelRing::GammaColor(uint32_t color)
   green = GAMMA[green];
   uint8_t blue = color & 0xFF;
   blue = GAMMA[blue];
+  uint32_t outColor = ((uint32_t)red   << 16) |
+                      ((uint32_t)green << 8)  |
+                      ((uint32_t)blue);
+  return outColor;
+}
+
+uint32_t NeoPixelRing::GammaInvColor(uint32_t color)
+{
+  uint8_t red = (color >> 16) & 0xFF;
+  red = GAMMA_INV[red];
+  uint8_t green = (color >> 8) & 0xFF;
+  green = GAMMA_INV[green];
+  uint8_t blue = color & 0xFF;
+  blue = GAMMA_INV[blue];
   uint32_t outColor = ((uint32_t)red   << 16) |
                       ((uint32_t)green << 8)  |
                       ((uint32_t)blue);
