@@ -84,6 +84,15 @@ class NeoPixelRing
     void setParam(uint8_t ringNum,
                   uint8_t param);
 
+    ////////////////////////////////////////////////////////////////////////////
+    /// @brief Returns the number of rings configured in the object
+    /// @return Number of rings
+    ////////////////////////////////////////////////////////////////////////////
+    uint8_t getNumRings() const
+    {
+        return numRings;
+    }
+
   private:
     ////////////////////////////////////////////////////////////////////////////
     /// @brief Sets a set of LEDs to a constant color.
